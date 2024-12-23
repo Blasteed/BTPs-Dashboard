@@ -1,1 +1,6 @@
-Flask
+flask
+requests
+asyncio
+aiohttp
+aiocache
+bs4
