@@ -13,7 +13,17 @@ class BTP:
         self.nominal_value = nominal_value
         self.gross_yield = gross_yield
         self.net_yield = net_yield
-        # self.duration = duration
+
+    def __str__(self):
+        return (f"Description: {self.description}\n"
+                f"ISIN: {self.isin}\n"
+                f"Market Price: {self.market_price}\n"
+                f"Variation: {self.variation}\n"
+                f"Coupon: {self.coupon}\n"
+                f"Maturity Date: {self.maturity_date}\n"
+                f"Nominal Value: {self.nominal_value}\n"
+                f"Gross Yield: {self.gross_yield}\n"
+                f"Net Yield: {self.net_yield}\n")
 
 
 def clear_data(data):
@@ -86,7 +96,7 @@ def ws_get_specific_details(scraping):
             else:
                 continue
 
-    return coupon, maturity_date, nominal_value, gross_yield, net_yield
+    return gross_yield, net_yield, coupon, maturity_date, nominal_value
 
 
 def ws_get_isin_codes():
@@ -127,24 +137,29 @@ def ws_get_isin_codes():
 
 def ws_get_btp_details(isin):
     url = f'https://www.borsaitaliana.it/borsa/obbligazioni/mot/obbligazioni-in-euro/scheda/{isin}.html'
+
     response = requests.get(url)
     scraping = ws(response.content, 'html5lib')
 
     description = clear_data(scraping.find('a', {'href': f'/borsa/obbligazioni/mot/btp/scheda/{isin}.html?lang=it'}).text)
     market_price, variation = ws_get_summary_price(scraping)
     gross_yield, net_yield, coupon, maturity_date, nominal_value = ws_get_specific_details(scraping)
-    # duration = scraping.find('span', {'id': 'id_duration'}).text.strip()
 
     return BTP(isin, description, market_price, variation, coupon, maturity_date, nominal_value, gross_yield, net_yield)
 
 
 def main():
     isin_list = ws_get_isin_codes()
-    btp_list = []
+
+    print(f"\n\n{"-"*30}\n{isin_list}\n{"-"*30}\n\n")
 
     for isin in isin_list:
         btp = ws_get_btp_details(isin)
-        btp_list.append(btp)
+
+        print(f"{"-"*30}\n")
+        print(btp)
+
+    print(f"Total: {len(isin_list)} BTPs")
 
 
 if __name__ == "__main__":
