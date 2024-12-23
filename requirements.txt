@@ -1,7 +1,1 @@
-flask
-requests
-asyncio
-future
-aiohttp
-aiocache
-bs4
+Flask
