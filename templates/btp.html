@@ -93,34 +93,32 @@
 
                     <div class="navbar-item pl-1 pr-0">
                         
-                        {% if loading %}
-                            <h3 id="skeleton" class="is-skeleton">999</h3>
+                        <h3 id="skeleton" class="is-skeleton is-hidden">999</h3>
 
-                        {% else %}
-                            <h3 id="content">{{ btp_data|length }}</h3>
-
-                        {% endif %}
+                        <h3 id="content">{{ btp_data|length }}</h3>
 
                     </div>
                     
-                    <div class="navbar-item">
+                    <div class="navbar-item pr-0">
 
                         <div class="buttons">
-
-                            <form action="/refresh" method="post" class="mb-0">
                     
-                                <button type="submit" href="/refresh" class="button is-primary is-hoverable" onclick="document.getElementById('refresh_icon').classList.remove('fa-arrow-rotate-right'); this.classList.add('is-loading');">
+                            <button id="refresh_button" type="submit" href="/refresh" class="button is-primary is-hoverable" onclick="refreshData()">
 
-                                    <span id="refresh_icon" class="icon"><i class="fas fa-arrow-rotate-right"></i></span>
+                                <span id="refresh_icon" class="icon"><i class="fas fa-arrow-rotate-right"></i></span>
 
-                                </button>
-
-                            </form>
+                            </button>
 
                         </div>
 
                     </div>
-                
+
+                    <div class="navbar-item">
+
+                        <tag class="tag {% if old_refresh %}is-danger{% elif med_old_refresh %}is-warning{% else %}is-success{% endif %} is-medium">Ultimo Aggiornamento: {{ refresh_time }}</tag>
+
+                    </div>
+
                 </div>
               
             </div>
@@ -151,23 +149,21 @@
 
                     <tbody>
 
-                        {%if loading%}
-                            {% for _ in range(10)%}
-                                <tr>
+                        {% for _ in range(30)%}
+                            <tr>
 
-                                    <td id="skeleton" class="is-skeleton">999</td>
-                                    <td id="skeleton" class="is-skeleton">ITXXXXXXXXXX</td>
-                                    <td id="skeleton" class="is-skeleton">XXXXXXXXXXXXXX</td>
-                                    <td id="skeleton" class="is-skeleton">999,99</td>
-                                    <td id="skeleton" class="is-skeleton">+(9,99%%)</td>
-                                    <td id="skeleton" class="is-skeleton">9,99</td>
-                                    <td id="skeleton" class="is-skeleton">99/99/9999</td>
+                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">999</span></td>
+                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">ITXXXXXXXXXX</span></td>
+                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">XXXXXXXXXXXXXX</span></td>
+                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">999,99</span></td>
+                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">+(99,999%%)</span></td>
+                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">9,99</span></td>
+                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">99/99/9999</span></td>
 
-                                </tr>
-                            {% endfor %}
+                            </tr>
+                        {% endfor %}
                         
-                        {% else %}
-                            {% for btp in btp_data %}
+                        {% for btp in btp_data %}
                             <tr>
 
                                 <td id="content">{{ loop.index0 + 1 }}</td>
@@ -179,9 +175,7 @@
                                 <td id="content">{{ btp.maturity_date }}</td>
 
                             </tr>
-                            {% endfor %}
-
-                        {% endif %}
+                        {% endfor %}
 
                     </tbody>
                     
@@ -197,15 +191,15 @@
                 
                 <span class="icon-text">
                     
-                    <span>Made in </span> 
+                    <span class="pr-1">Made in </span> 
                     
                     <span class="icon">
                     
-                        <img class="icon pd-medium" src='icons/italy-256.png' alt="Italy">
+                        <img class="icon" src='icons/italy-256.png' alt="Italy">
                     
                     </span>
 
-                    <span> with </span>
+                    <span class="pl-1"> with </span>
 
                     <span class="icon">
                     
@@ -220,6 +214,36 @@
         </footer>
         
         <script src="https://cdn.datatables.net/v/bm/dt-2.1.8/datatables.min.js"></script>
+
+        <script>
+
+            function refreshData() {
+
+                document.getElementById('refresh_icon').classList.remove('fas', 'fa-arrow-rotate-right');
+                document.getElementById('refresh_button').classList.add('is-loading');
+                document.querySelectorAll('#skeleton').forEach(el => el.classList.remove('is-hidden'));
+                document.querySelectorAll('#content').forEach(el => el.classList.add('is-hidden'));
+                
+                fetch('/refresh', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        console.error('Errore durante il refresh dei dati');
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore:', error);
+                });
+
+            }
+
+        </script>
 
         <script>
 

@@ -1,40 +1,53 @@
 import os
 import asyncio
-from flask import Flask, render_template, send_from_directory, redirect, url_for
+
 from scripts.get_btp_data_async import get_btp_data
+
+from datetime import datetime, timedelta
+from flask import Flask, render_template, send_from_directory, redirect, url_for
 
 
 app = Flask(__name__)
 
 
-refreshed = False
+DATE_FORMAT = "%H:%M %d/%m/%Y"
 
 
-loading = True
 print("Start - Getting BTPs Data")
 btp_data = asyncio.run(get_btp_data())
 print("Start - Got BTPs Data")
-loading = False
+
+
+refresh_time = datetime.now().strftime(DATE_FORMAT)
 
 
 @app.route('/')
 def home():
-    global refreshed, btp_data, loading
+    global btp_data, refresh_time
 
-    return render_template('btp.html', title='Karfee | BTP', btp_data=btp_data, loading=loading)
+    current_time = datetime.now().strftime(DATE_FORMAT)
+
+    old_refresh = (current_time - refresh_time) > timedelta(hours=12)
+    med_old_refresh = (current_time - refresh_time) > timedelta(hours=6)
+
+    return render_template('btp.html', title='Karfee | BTP',
+                            btp_data=btp_data, 
+                            refresh_time=refresh_time, 
+                            old_refresh=old_refresh,
+                            med_old_refresh=med_old_refresh)
 
 
 @app.route('/refresh', methods=['POST'])
 def refresh():
-    global refreshed, btp_data, loading
+    global btp_data, refresh_time
 
-    loading = True
     print("\"/refresh\" - Getting BTPs Data")
     btp_data = asyncio.run(get_btp_data())
     print("\"/refresh\" - Got BTPs Data")
-    loading = False
 
-    refreshed = True
+    refresh_time = datetime.now().strftime(DATE_FORMAT)
+
+    print("\"/refresh\" - Refreshed at:", refresh_time)
 
     return redirect(url_for('home'))
 

@@ -6,3 +6,9 @@ instance/
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Git specific
+.gitignore
+
+# Scripts directory
+tests.py
