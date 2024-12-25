@@ -1,20 +1,42 @@
 import os
 import asyncio
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, redirect, url_for
 from scripts.get_btp_data_async import get_btp_data
 
 
 app = Flask(__name__)
 
 
-print("Getting BTPs Data")
+refreshed = False
+
+
+loading = True
+print("Start - Getting BTPs Data")
 btp_data = asyncio.run(get_btp_data())
-print("Got BTPs Data")
+print("Start - Got BTPs Data")
+loading = False
 
 
 @app.route('/')
 def home():
-    return render_template('btp.html', title='Karfee | BTP', btp_data=btp_data)
+    global refreshed, btp_data, loading
+
+    return render_template('btp.html', title='Karfee | BTP', btp_data=btp_data, loading=loading)
+
+
+@app.route('/refresh', methods=['POST'])
+def refresh():
+    global refreshed, btp_data, loading
+
+    loading = True
+    print("\"/refresh\" - Getting BTPs Data")
+    btp_data = asyncio.run(get_btp_data())
+    print("\"/refresh\" - Got BTPs Data")
+    loading = False
+
+    refreshed = True
+
+    return redirect(url_for('home'))
 
 
 # @app.route('/about')
@@ -48,4 +70,4 @@ def icons(filename):
 
 
 if __name__ == '__main__':
-    app.run(debug=False, use_reloader=False)
+    app.run(debug=True, use_reloader=False)

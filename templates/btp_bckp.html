@@ -85,21 +85,15 @@
 
                 <div class="navbar-end">
 
-                    <div class="navbar-item pr-0">
+                    <div class="navbar-item">
 
                         <h3>Totale BTP:</h3>
 
                     </div>
 
-                    <div class="navbar-item pl-1 pr-0">
-                        
-                        {% if loading %}
-                            <h3 id="skeleton" class="is-skeleton">999</h3>
+                    <div class="navbar-item">
 
-                        {% else %}
-                            <h3 id="content">{{ btp_data|length }}</h3>
-
-                        {% endif %}
+                        <h3>{{ btp_data|length }}</h3>
 
                     </div>
                     
@@ -109,9 +103,9 @@
 
                             <form action="/refresh" method="post" class="mb-0">
                     
-                                <button type="submit" href="/refresh" class="button is-primary is-hoverable" onclick="document.getElementById('refresh_icon').classList.remove('fa-arrow-rotate-right'); this.classList.add('is-loading');">
+                                <button type="submit" href="/refresh" class="button is-primary is-hoverable" onclick="this.classList.add('is-loading')">
 
-                                    <span id="refresh_icon" class="icon"><i class="fas fa-arrow-rotate-right"></i></span>
+                                    <span class="icon"><i class="fas fa-arrow-rotate-right"></i></span>
 
                                 </button>
 
@@ -151,37 +145,19 @@
 
                     <tbody>
 
-                        {%if loading%}
-                            {% for _ in range(10)%}
-                                <tr>
+                        {% for btp in btp_data %}
+                        <tr>
 
-                                    <td id="skeleton" class="is-skeleton">999</td>
-                                    <td id="skeleton" class="is-skeleton">ITXXXXXXXXXX</td>
-                                    <td id="skeleton" class="is-skeleton">XXXXXXXXXXXXXX</td>
-                                    <td id="skeleton" class="is-skeleton">999,99</td>
-                                    <td id="skeleton" class="is-skeleton">+(9,99%%)</td>
-                                    <td id="skeleton" class="is-skeleton">9,99</td>
-                                    <td id="skeleton" class="is-skeleton">99/99/9999</td>
+                            <td id="content" class="is-hidden">{{ loop.index0 + 1 }}</td>
+                            <td id="content" class="is-hidden"><a href="https://www.borsaitaliana.it/borsa/obbligazioni/mot/btp/scheda/{{ btp.isin }}.html" target="_blank">{{ btp.isin }}</a></td>
+                            <td id="content" class="is-hidden"><strong>{{ btp.description }}</strong></td>
+                            <td id="content" class="is-hidden">{{ btp.market_price }}</td>
+                            <td id="content" class="is-hidden"><tag class="tag {% if '-' in btp.variation %}is-danger{% elif "0,00%" in btp.variation %}is-info{% else %}is-success{% endif %}">({{ btp.variation }})</td>
+                            <td id="content" class="is-hidden">{{ btp.coupon }}</td>
+                            <td id="content" class="is-hidden">{{ btp.maturity_date }}</td>
 
-                                </tr>
-                            {% endfor %}
-                        
-                        {% else %}
-                            {% for btp in btp_data %}
-                            <tr>
-
-                                <td id="content">{{ loop.index0 + 1 }}</td>
-                                <td id="content"><a href="https://www.borsaitaliana.it/borsa/obbligazioni/mot/btp/scheda/{{ btp.isin }}.html" target="_blank">{{ btp.isin }}</a></td>
-                                <td id="content"><strong>{{ btp.description }}</strong></td>
-                                <td id="content">{{ btp.market_price }}</td>
-                                <td id="content"><tag class="tag {% if '-' in btp.variation %}is-danger{% elif "0,00%" in btp.variation %}is-info{% else %}is-success{% endif %}">({{ btp.variation }})</td>
-                                <td id="content">{{ btp.coupon }}</td>
-                                <td id="content">{{ btp.maturity_date }}</td>
-
-                            </tr>
-                            {% endfor %}
-
-                        {% endif %}
+                        </tr>
+                        {% endfor %}
 
                     </tbody>
                     
