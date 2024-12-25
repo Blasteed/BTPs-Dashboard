@@ -27,14 +27,18 @@ def home():
 
     current_time = datetime.now().strftime(DATE_FORMAT)
 
-    old_refresh = (current_time - refresh_time) > timedelta(hours=12)
-    med_old_refresh = (current_time - refresh_time) > timedelta(hours=6)
+    refresh_time_str = datetime.strptime(refresh_time, DATE_FORMAT)
+    current_time_str = datetime.strptime(current_time, DATE_FORMAT)
+
+    old_refresh = (current_time_str - refresh_time_str) > timedelta(hours=12)
+    med_old_refresh = (current_time_str - refresh_time_str) > timedelta(hours=6)
 
     return render_template('btp.html', title='Karfee | BTP',
                             btp_data=btp_data, 
-                            refresh_time=refresh_time, 
+                            refresh_time=refresh_time,
                             old_refresh=old_refresh,
-                            med_old_refresh=med_old_refresh)
+                            med_old_refresh=med_old_refresh
+                            )
 
 
 @app.route('/refresh', methods=['POST'])
@@ -83,4 +87,4 @@ def icons(filename):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False)
+    app.run(debug=True, use_reloader=False, port=8080)

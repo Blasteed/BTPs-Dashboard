@@ -115,7 +115,9 @@
 
                     <div class="navbar-item">
 
-                        <tag class="tag {% if old_refresh %}is-danger{% elif med_old_refresh %}is-warning{% else %}is-success{% endif %} is-medium">Ultimo Aggiornamento: {{ refresh_time }}</tag>
+                        <tag id="skeleton" class="is-skeleton is-hidden">Ultimo aggiornamento: 99:99 99/99/9999</tag>
+
+                        <tag id="content" class="tag {% if old_refresh %}id-danger{%elif med_old_refresh%}is-warning{% else %}is-info{% endif %} is-medium">Ultimo Aggiornamento: {{ refresh_time }}</tag>
 
                     </div>
 
@@ -170,7 +172,7 @@
                                 <td id="content"><a href="https://www.borsaitaliana.it/borsa/obbligazioni/mot/btp/scheda/{{ btp.isin }}.html" target="_blank">{{ btp.isin }}</a></td>
                                 <td id="content"><strong>{{ btp.description }}</strong></td>
                                 <td id="content">{{ btp.market_price }}</td>
-                                <td id="content"><tag class="tag {% if '-' in btp.variation %}is-danger{% elif "0,00%" in btp.variation %}is-info{% else %}is-success{% endif %}">({{ btp.variation }})</td>
+                                <td id="content"><tag class="tag {% if '-' in btp.variation %}is-danger{% elif "0,00%" in btp.variation %}is-warning{% else %}is-success{% endif %}">({{ btp.variation }})</td>
                                 <td id="content">{{ btp.coupon }}</td>
                                 <td id="content">{{ btp.maturity_date }}</td>
 
