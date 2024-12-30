@@ -12,7 +12,7 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H your-ec2-ip >> ~/.ssh/known_hosts
+        ssh-keyscan -H 16.170.234.136 >> ~/.ssh/known_hosts
 
     - name: Pull latest changes on EC2
       run: |
