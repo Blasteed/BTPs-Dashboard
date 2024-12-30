@@ -1,0 +1,19 @@
+name: Pull on EC2
+
+on: push
+
+jobs:
+  update-ec2:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H your-ec2-ip >> ~/.ssh/known_hosts
+
+    - name: Pull latest changes on EC2
+      run: |
+        ssh -i ~/.ssh/id_rsa gituser@karfee.servebeer.com 'cd /home/admin/PersonalFlask && git pull'
