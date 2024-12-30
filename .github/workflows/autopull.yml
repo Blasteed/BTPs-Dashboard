@@ -16,4 +16,4 @@ jobs:
 
     - name: Pull latest changes on EC2
       run: |
-        ssh -i ~/.ssh/id_rsa gituser@16.170.234.136 'cd /home/admin/PersonalFlask && git pull'
+        ssh -i ~/.ssh/id_rsa gituser@16.170.234.136 'cd /home/admin/PersonalFlask && sudo git pull'
