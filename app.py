@@ -76,9 +76,9 @@ def icons(filename):
     return send_from_directory(os.path.join(app.root_path, 'static/icons'), filename)
 
 
-# @app.route('/css/<path:filename>')
-# def css(filename):
-#     return send_from_directory(os.path.join(app.root_path, 'static/css'), filename)
+@app.route('/css/<path:filename>')
+def css(filename):
+    return send_from_directory(os.path.join(app.root_path, 'static/css'), filename)
 
 
 # @app.route('/js/<path:filename>')

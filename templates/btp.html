@@ -8,9 +8,11 @@
 
         <link rel="icon" type="image/png" href="favicon.ico">
 
+        <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/v/bm/jq-3.7.0/dt-2.1.8/af-2.7.0/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/b-print-3.2.0/cr-2.0.4/date-1.5.4/fc-5.0.4/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.1/rr-1.5.0/sc-2.4.3/sb-1.8.1/sp-2.3.3/sl-2.1.0/sr-1.4.1/datatables.min.css"> 
+        
     </head>
 
     <body style="background: linear-gradient(to bottom right, #ffcc00 34%, #ff0066 100%); min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between;">
@@ -71,7 +73,7 @@
                             
                             <hr class="navbar-divider"> #}
                         
-                            <a class="navbar-item has-text-danger" href="mailto:acarfagna03@gmail.com?subject=Segnala%20un%problema%20--%20Karfee's%20Webroot">
+                            <a class="navbar-item has-text-danger" href="mailto:acarfagna03@gmail.com?subject=Segnala%20un%20problema%20--%20Karfee's%20Webroot">
                         
                                 Segnala un problema
                         
@@ -131,7 +133,7 @@
 
             <div class="columns is-centered">
 
-                <table id="btp-table" class="table table is-striped is-hoverable is-fullwidth">
+                <table id="btp-table" class="table is-striped is-hoverable">
 
                     <thead>
 
@@ -230,19 +232,28 @@
                 
                 fetch('/refresh', {
                     method: 'POST',
+
                     headers: {
                         'Content-Type': 'application/json',
+
                     },
+              
                 })
                 .then(response => {
                     if (response.ok) {
                         location.reload();
-                    } else {
+                    
+                    } 
+                    
+                    else {
                         console.error('Errore durante il refresh dei dati');
+                        
                     }
+               
                 })
                 .catch(error => {
                     console.error('Errore:', error);
+
                 });
 
             }
@@ -276,14 +287,22 @@
                             "next": "Prossima",
                     
                             "previous": "Precedente"
+                            
                         }
+
                     },
 
                     fixedHeader: {
                         header: false,
 
                         footer: false
+
                     },
+                    
+                    columnDefs: [
+                        { targets: '_all', className: 'dt-nowrap' }
+
+                    ],
                     
                     "drawCallback": function(settings) {
                         $('#btp-table_wrapper label').addClass('has-text-black');
