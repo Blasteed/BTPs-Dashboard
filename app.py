@@ -38,7 +38,7 @@ def home():
                             refresh_time=refresh_time,
                             old_refresh=old_refresh,
                             med_old_refresh=med_old_refresh
-                            )
+                          )
 
 
 @app.route('/refresh', methods=['POST'])
@@ -86,5 +86,5 @@ def icons(filename):
 #     return send_from_directory(os.path.join(app.root_path, 'static/js'), filename)
 
 
-if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False)
+# if __name__ == '__main__':
+#     app.run(debug=True, use_reloader=False)
