@@ -30,7 +30,7 @@ def load_btp_data():
 def get_refresh_time():
     refresh_time = datetime.now().strftime(DATE_FORMAT)
 
-    print("Refresh Time - Got Rfresh Time | Refreshed at:", refresh_time)
+    print("Refresh Time - Got Refresh Time | Refreshed at:", refresh_time)
 
     return refresh_time
 
@@ -93,4 +93,4 @@ def icons(filename):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=8080, debug=True, use_reloader=False)
