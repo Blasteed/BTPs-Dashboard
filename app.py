@@ -13,45 +13,51 @@ app = Flask(__name__)
 DATE_FORMAT = "%H:%M %d/%m/%Y"
 
 
-print("Start - Getting BTPs Data")
-btp_data = asyncio.run(get_btp_data())
-print("Start - Got BTPs Data")
+###############################
+#          METHODS            #
+###############################
+
+def load_btp_data():
+    print("Start - Getting BTPs Data")
+
+    data = asyncio.run(get_btp_data())
+
+    print("Start - Got BTPs Data")
+
+    return data
 
 
-refresh_time = datetime.now().strftime(DATE_FORMAT)
+def get_refresh_time():
+    refresh_time = datetime.now().strftime(DATE_FORMAT)
+
+    print("Refresh Time - Got Rfresh Time | Refreshed at:", refresh_time)
+
+    return refresh_time
+
+###############################
+
+
+btp_data = load_btp_data()
+refresh_time = get_refresh_time()
 
 
 @app.route('/')
 def home():
     global btp_data, refresh_time
 
-    current_time = datetime.now().strftime(DATE_FORMAT)
-
-    refresh_time_str = datetime.strptime(refresh_time, DATE_FORMAT)
-    current_time_str = datetime.strptime(current_time, DATE_FORMAT)
-
-    old_refresh = (current_time_str - refresh_time_str) > timedelta(hours=12)
-    med_old_refresh = (current_time_str - refresh_time_str) > timedelta(hours=6)
-
     return render_template('btp.html', title='Karfee | BTP',
-                            btp_data=btp_data, 
-                            refresh_time=refresh_time,
-                            old_refresh=old_refresh,
-                            med_old_refresh=med_old_refresh
-                          )
+                           btp_data=btp_data,
+                           refresh_time=refresh_time,
+                           )
 
 
 @app.route('/refresh', methods=['POST'])
 def refresh():
     global btp_data, refresh_time
 
-    print("\"/refresh\" - Getting BTPs Data")
-    btp_data = asyncio.run(get_btp_data())
-    print("\"/refresh\" - Got BTPs Data")
+    btp_data = load_btp_data()
 
-    refresh_time = datetime.now().strftime(DATE_FORMAT)
-
-    print("\"/refresh\" - Refreshed at:", refresh_time)
+    refresh_time = get_refresh_time()
 
     return redirect(url_for('home'))
 
@@ -86,5 +92,5 @@ def icons(filename):
 #     return send_from_directory(os.path.join(app.root_path, 'static/js'), filename)
 
 
-# if __name__ == '__main__':
-#     app.run(debug=True, use_reloader=False)
+if __name__ == '__main__':
+    app.run(debug=True, use_reloader=False)
