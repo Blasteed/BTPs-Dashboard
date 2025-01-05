@@ -166,7 +166,7 @@ async def ws_get_btp_details(session, isin):
 
             scraping = ws(await response.text(), 'html5lib')
 
-            description = clear_data(scraping.find('a', {'href': f'/borsa/obbligazioni/mot/btp/scheda/{isin}.html?lang=it'}))
+            description = clear_data(scraping.find('a', {'href': f'/borsa/obbligazioni/mot/btp/scheda/{isin}.html?lang=it'}).text)
             market_price, variation = await ws_get_summary_price(scraping)
             gross_yield, net_yield, coupon_periodity, coupon, maturity_date, nominal_value = await ws_get_specific_details(scraping)
 
