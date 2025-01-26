@@ -1,3 +1,1 @@
-# PersonalFlask
-
-This is my personal Flask application Repository. None of your business 😉, but i hope it will be useful...
+# BTPs Dashboard
