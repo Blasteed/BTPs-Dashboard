@@ -6,6 +6,21 @@ from bs4 import BeautifulSoup as ws
 
 class BTP:
     def __init__(self, isin, description, market_price, variation, coupon_periodity, coupon, maturity_date, nominal_value, gross_yield, net_yield):
+        """
+        Initialize BTP object.
+
+        :param isin: ISIN code of the BTP
+        :param description: Description of the BTP
+        :param market_price: Market price of the BTP
+        :param variation: Variation of the BTP
+        :param coupon_periodity: Periodity of the coupon
+        :param coupon: Coupon
+        :param maturity_date: Maturity date of the BTP
+        :param nominal_value: Nominal value of the BTP
+        :param gross_yield: Gross yield of the BTP
+        :param net_yield: Net yield of the BTP
+        """
+
         self.isin = isin
         self.description = description
         self.market_price = market_price
@@ -19,6 +34,13 @@ class BTP:
 
 
 def clear_data(data):
+    """
+    Clear data from Borsa Italiana website.
+
+    :param data: Data to be cleared
+    :return: Cleared data
+    """
+
     return data.replace('-', '').strip()
 
 
@@ -174,6 +196,17 @@ async def ws_get_btp_details(session, isin):
 
 
 async def get_btp_data():
+    """
+    Asynchronously retrieves BTP (Buoni del Tesoro Poliennali) data.
+
+    This function fetches a list of ISIN codes and then gathers detailed BTP data 
+    for each ISIN code concurrently using asynchronous network requests.
+
+    :return: A list of BTP objects containing details such as ISIN, description, 
+             market price, variation, coupon periodity, coupon, maturity date, 
+             nominal value, gross yield, and net yield.
+    """
+
     isin_list = await ws_get_isin_codes()
 
     async with aiohttp.ClientSession() as session:
@@ -181,6 +214,22 @@ async def get_btp_data():
         btps = await asyncio.gather(*tasks)
 
         return btps
+
+
+def asyncrun_get_btp_data():
+    """
+    Runs get_btp_data asynchronously using asyncio.run.
+
+    This is a convenient function to call when you just want to run the
+    asynchronous get_btp_data function synchronously.
+
+    Returns:
+        A list of BTP objects containing details such as ISIN, description,
+        market price, variation, coupon periodity, coupon, maturity date,
+        nominal value, gross yield, and net yield.
+    """
+
+    return asyncio.run(get_btp_data())
 
 
 if __name__ == "__main__":

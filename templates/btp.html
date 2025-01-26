@@ -1,269 +1,81 @@
-<!DOCTYPE HTML5>
 
+html
+CopyInsert
+<!DOCTYPE html>
 <html>
 
-    <head>
+<head>
+  <meta charset="UTF-8">
+  <title>Karfee | BTP</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/v/bm/jq-3.7.0/dt-2.1.8/af-2.7.0/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/b-print-3.2.0/cr-2.0.4/date-1.5.4/fc-5.0.4/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.1/rr-1.5.0/sc-2.4.3/sb-1.8.1/sp-2.3.3/sl-2.1.0/sr-1.4.1/datatables.min.css"/>
+  <link rel="icon" type="image/png" href="favicon.ico">
+</head>
 
-        <title>{{ title }}</title>
+<body>
 
-        <link rel="icon" type="image/png" href="favicon.ico">
+  <nav class="top-bar">
+    <div class="top-bar-left">
+      <ul class="menu">
+        <li class="menu-text">Karfee</li>
+      </ul>
+    </div>
+  </nav>
 
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="https://cdn.datatables.net/v/bm/jq-3.7.0/dt-2.1.8/af-2.7.0/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/b-print-3.2.0/cr-2.0.4/date-1.5.4/fc-5.0.4/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.1/rr-1.5.0/sc-2.4.3/sb-1.8.1/sp-2.3.3/sl-2.1.0/sr-1.4.1/datatables.min.css"> 
-        
-    </head>
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x">
+      <div class="cell large-12">
+        <h2>BTP</h2>
 
-    <body style="background: linear-gradient(to bottom right, #ffcc00 34%, #ff0066 100%); min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between;">
-
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-            
-            <div class="navbar-brand">
-          
-                <a class="navbar-item" href="/">
-
-                    <svg width="60" height="60" viewBox="0 0 100 100">
-                  
-                        <defs>
-                  
-                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  
-                                <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
-                  
-                                <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
-                  
-                            </linearGradient>
-                  
-                        </defs>
-                  
-                        <path d="M15 90 L15 10 L35 10 L35 50 L25 10 L85 10 L55 50 L85 90 L25 90 L35 50 L35 90 Z" fill="url(#grad1)" />
-                  
-                    </svg>
-
-                </a>
-
-            </div>
-          
-            <div id="navbar" class="navbar-menu">
-
-                <div class="navbar-start">
-
-                    {# <a class="navbar-item" href="/">
-                        
-                        Home
-                    
-                    </a> #}
-            
-                    <div class="navbar-item has-dropdown is-hoverable">
-
-                        <a class="navbar-link">
-
-                            Altro
-
-                        </a>
-            
-                        <div class="navbar-dropdown">
-
-                            {# <a class="navbar-item" href="/about">
-                        
-                                About
-                            
-                            </a>
-                            
-                            <hr class="navbar-divider"> #}
-                        
-                            <a class="navbar-item has-text-danger" href="mailto:acarfagna03@gmail.com?subject=Segnala%20un%20problema%20--%20Karfee's%20Webroot">
-                        
-                                Segnala un problema
-                        
-                            </a>
-
-                        </div>
-
-                    </div>
-                
-                </div>
-
-                <div class="navbar-end">
-
-                    <div class="navbar-item pr-0">
-
-                        <h3>Totale BTP:</h3>
-
-                    </div>
-
-                    <div class="navbar-item pl-1 pr-0">
-                        
-                        <h3 id="skeleton" class="is-skeleton is-hidden">999</h3>
-
-                        <h3 id="content">{{ btp_data|length }}</h3>
-
-                    </div>
-
-                    <div class="navbar-item">
-
-                        <tag id="skeleton" class="is-skeleton is-hidden">Ultimo aggiornamento: 99:99 99/99/9999</tag>
-
-                        <tag id="content" class="tag {% if old_refresh %}id-danger{%elif med_old_refresh%}is-warning{% else %}is-info{% endif %} is-medium">Ultimo Aggiornamento: {{ refresh_time }}</tag>
-
-                    </div>
-                    
-                    <div class="navbar-item pl-0">
-
-                        <div class="buttons">
-                    
-                            <button id="refresh_button" type="submit" href="/refresh" class="button is-primary is-hoverable" onclick="refreshData()">
-
-                                <span id="refresh_icon" class="icon"><i class="fas fa-arrow-rotate-right"></i></span>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-              
-            </div>
-
-        </nav>
-
-        <div class="container mt-5 mb-5">
-
-            <div class="columns is-centered">
-
-                <table id="btp-table" class="table is-striped is-hoverable">
-
-                    <thead>
-
-                        <tr>
-                            
-                            <th>N.</th>
-                            <th>ISIN</th>
-                            <th>Nome</th>
-                            <th>Prezzo</th>
-                            <th>Variazione</th>
-                            <th>Cedola</th>
-                            <th>Scadenza</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {% for _ in range(30)%}
-                            <tr>
-
-                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">999</span></td>
-                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">ITXXXXXXXXXX</span></td>
-                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">XXXXXXXXXXXXXX</span></td>
-                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">999,99</span></td>
-                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">+(99,999%%)</span></td>
-                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">9,99</span></td>
-                                <td id="skeleton" class="is-hidden"><span class="is-skeleton">99/99/9999</span></td>
-
-                            </tr>
-                        {% endfor %}
-                        
-                        {% for btp in btp_data %}
-                            <tr>
-
-                                <td id="content">{{ loop.index0 + 1 }}</td>
-                                <td id="content"><a href="https://www.borsaitaliana.it/borsa/obbligazioni/mot/btp/scheda/{{ btp.isin }}.html" target="_blank">{{ btp.isin }}</a></td>
-                                <td id="content"><strong>{{ btp.description }}</strong></td>
-                                <td id="content">{{ btp.market_price }}</td>
-                                <td id="content"><tag class="tag {% if '-' in btp.variation %}is-danger{% elif "0,00%" in btp.variation %}is-warning{% else %}is-success{% endif %}">({{ btp.variation }})</td>
-                                <td id="content">{{ btp.coupon }}</td>
-                                <td id="content">{{ btp.maturity_date }}</td>
-
-                            </tr>
-                        {% endfor %}
-
-                    </tbody>
-                    
-                </table>
-            
-            </div>
-
-        </div>
+        <table id="btp-table" class="display responsive-table" style="width:100%">
+          <thead>
+            <tr>
+              <th>N.</th>
+              <th>ISIN</th>
+              <th>Nome</th>
+              <th>Prezzo</th>
+              <th>Variazione</th>
+              <th>Cedola</th>
+              <th>Scadenza</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for btp in btp_data %}
+            <tr>
+              <td>{{ loop.index0 + 1 }}</td>
+              <td><a href="https://www.borsaitaliana.it/borsa/obbligazioni/mot/btp/scheda/{{ btp.isin }}.html" target="_blank">{{ btp.isin }}</a></td>
+              <td><strong>{{ btp.description }}</strong></td>
+              <td>{{ btp.market_price }}</td>
+              <td><span class="badge {{ 'alert' if '-' in btp.variation else 'success' if "0,00%" in btp.variation else 'primary' }}">{{
+                  btp.variation }}</span></td>
+              <td>{{ btp.coupon }}</td>
+              <td>{{ btp.maturity_date }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
 
         <footer class="footer">
-
-            <div class="content has-text-centered">
-                
-                <span class="icon-text">
-                    
-                    <span class="pr-1">Made in </span> 
-                    
-                    <span class="icon">
-                    
-                        <img class="icon" src='icons/italy-256.png' alt="Italy">
-                    
-                    </span>
-
-                    <span class="pl-1"> with </span>
-
-                    <span class="icon">
-                    
-                        <img class="icon" src='icons/pixel-heart-256.png' alt="Pixel Heart">
-                    
-                    </span> 
-
+          <div class="grid-x grid-margin-x">
+            <div class="cell large-12">
+              <span class="icon-text">
+                <span class="pr-1">Made in </span>
+                <span class="icon">
+                  <img class="icon" src='icons/italy-256.png' alt="Italy">
                 </span>
-                
+                <span class="pl-1"> with </span>
+                <span class="icon">
+                  <img class="icon" src='icons/pixel-heart-256.png' alt="Pixel Heart">
+                </span>
+              </span>
             </div>
-            
+          </div>
         </footer>
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js"></script>
         <script src="https://cdn.datatables.net/v/bm/jq-3.7.0/dt-2.1.8/af-2.7.0/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/b-print-3.2.0/cr-2.0.4/date-1.5.4/fc-5.0.4/fh-4.0.1/kt-2.12.1/r-3.0.3/rg-1.5.1/rr-1.5.0/sc-2.4.3/sb-1.8.1/sp-2.3.3/sl-2.1.0/sr-1.4.1/datatables.min.js"></script>
-        
         <script>
-
-            function refreshData() {
-
-                document.getElementById('refresh_icon').classList.remove('fas', 'fa-arrow-rotate-right');
-                document.getElementById('refresh_button').classList.add('is-loading');
-                document.querySelectorAll('#skeleton').forEach(el => el.classList.remove('is-hidden'));
-                document.querySelectorAll('#content').forEach(el => el.classList.add('is-hidden'));
-                
-                fetch('/refresh', {
-                    method: 'POST',
-
-                    headers: {
-                        'Content-Type': 'application/json',
-
-                    },
-              
-                })
-                .then(response => {
-                    if (response.ok) {
-                        location.reload();
-                    
-                    } 
-                    
-                    else {
-                        console.error('Errore durante il refresh dei dati');
-                        
-                    }
-               
-                })
-                .catch(error => {
-                    console.error('Errore:', error);
-
-                });
-
-            }
-
-        </script>
-
-        <script>
-
-            $(document).ready(function() {
-                $('#btp-table').DataTable({
+        $('#btp-table').DataTable({
                     autoWidth: true,
 
                     info: false,
