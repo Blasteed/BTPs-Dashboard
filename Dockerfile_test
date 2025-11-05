@@ -1,0 +1,1 @@
+RUN which python3 && which python
