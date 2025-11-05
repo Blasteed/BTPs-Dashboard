@@ -1,4 +1,4 @@
-FROM python:3.14-slim
+FROM python:3.14
 
 WORKDIR /app
 
@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 8501
 
-CMD ["python", "-m", "streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.headless=true"]
+CMD ["pythone", "-m", "streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.headless=true"]
