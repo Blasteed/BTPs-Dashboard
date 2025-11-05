@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 8501
 
-CMD ["streamlit", "run", "la_tua_app.py", "--server.port=8501", "--server.headless=true"]
+CMD ["streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.headless=true"]
